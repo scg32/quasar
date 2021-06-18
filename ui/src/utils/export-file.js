@@ -6,7 +6,7 @@ function clean (link) {
   link.remove()
 }
 
-export default function (fileName, rawData, mimeType) {
+export default function (fileName, rawData, mimeType, parentElementId) {
   const blob = new Blob([ rawData ], { type: mimeType || 'text/plain' })
 
   // IE11 has its own stuff...
@@ -21,7 +21,13 @@ export default function (fileName, rawData, mimeType) {
 
   link.classList.add('hidden')
   link.style.position = 'fixed' // avoid scrolling to bottom
-  document.body.appendChild(link)
+  if (typeof parentId !== 'undefined') {
+    const parentElement = document.getElementById(parentElementId)
+    link.style.visibility = 'hidden'
+    parentElement.appendChild(link);
+  } else {
+    document.body.appendChild(link)
+  }
 
   try {
     link.click()
